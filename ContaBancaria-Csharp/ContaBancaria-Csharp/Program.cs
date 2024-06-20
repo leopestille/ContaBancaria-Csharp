@@ -27,13 +27,41 @@
                 switch (opcao) {
                     case 1:
                         Console.Write("Digite o Valor a ser Depositado: ");
-                        double valorDeposito = double.Parse(Console.ReadLine());
-                        conta.Depositar(valorDeposito);
+                        while (true) {
+                            try {
+                                double valorDeposito = double.Parse(Console.ReadLine());
+                                if(valorDeposito > 0) {
+                                    conta.Depositar(valorDeposito);
+                                    Console.WriteLine("Depósito realizado com sucesso!");
+                                    break;
+                                }
+                                else {
+                                    Console.WriteLine("Valor Inválido para Depósito. Digite um valor maior que zero.");
+                                }
+                            }
+                            catch (FormatException) {
+                                Console.WriteLine("Valor Inválido para Depósito. Digite um valor numérico.");
+                            }
+                        }
                         break;
                     case 2:
                         Console.Write("Digite o Valor a ser Sacado: ");
-                        double valorSaque = double.Parse(Console.ReadLine());
-                        conta.Sacar(valorSaque);
+                        while (true) {
+                            try {
+                                double valorSaque = double.Parse(Console.ReadLine());
+                                if(valorSaque > 0 && valorSaque <= conta.ConsultarSaldo()) {
+                                    conta.Sacar(valorSaque);
+                                    Console.WriteLine("Saque Realizado com Sucesso!");
+                                    break;
+                                }
+                                else {
+                                    Console.WriteLine("Valor inválido para saque. Digite um valor positivo menor ou igual ao saldo:");
+                                }
+                            }
+                            catch(FormatException) {
+                                Console.WriteLine("Formato de valor inválido. Digite um número:");
+                            }
+                        }
                         break;
                     case 3:
                         double saldoAtual = conta.ConsultarSaldo();
