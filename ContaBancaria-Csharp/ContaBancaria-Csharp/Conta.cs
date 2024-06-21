@@ -15,20 +15,13 @@
 
         public void Depositar(double valor) { 
         if (valor > 0) {
-                Saldo += valor;
-                Console.WriteLine("Depósito Realizado com Sucesso!");
-            }
-            else {
-                Console.WriteLine("Valor Inválido para depósito");
-            }
+                Saldo += valor;                
+            }            
         }
 
         public void Sacar(double valor) {
             if (valor > 0 && valor <= Saldo) {
-                Saldo -= valor;
-                Console.WriteLine("Saque Realizado com Sucesso");
-            }else {
-                Console.WriteLine("Saldo insuficiente para Saque.");
+                Saldo -= valor;                
             }
         }
 
