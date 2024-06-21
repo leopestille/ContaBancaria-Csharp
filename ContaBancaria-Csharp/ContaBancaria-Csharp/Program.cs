@@ -27,40 +27,54 @@
                 switch (opcao) {
                     case 1:
                         Console.Write("Digite o Valor a ser Depositado: ");
-                        while (true) {
-                            try {
-                                double valorDeposito = double.Parse(Console.ReadLine());
-                                if(valorDeposito > 0) {
-                                    conta.Depositar(valorDeposito);
-                                    Console.WriteLine("Depósito realizado com sucesso!");
-                                    break;
-                                }
-                                else {
-                                    Console.WriteLine("Valor Inválido para Depósito. Digite um valor maior que zero.");
-                                }
+                        try {
+                            double ValorDeposito = double.Parse(Console.ReadLine());
+                            if (ValorDeposito <= 0) {
+                                throw new ValorInvalidoException();
                             }
-                            catch (FormatException) {
-                                Console.WriteLine("Valor Inválido para Depósito. Digite um valor numérico.");
+                            else {
+                                conta.Depositar(ValorDeposito);
+                                Console.WriteLine("Depósito realizado com sucesso!");
                             }
                         }
-                        break;
+                        catch (ValorInvalidoException ex) {
+                            Console.WriteLine(ex.Message); // Exibe a mensagem da exceção personalizada
+                        }
+                        catch (FormatException) {
+                            Console.WriteLine("Por Favor, digite um número. ");
+                        }
+                        catch (Exception ex) // Captura exceções genéricas não tratadas anteriormente
+                        {
+                            Console.WriteLine("Erro inesperado: " + ex.Message);
+                        }
+                        break;                            
                     case 2:
-                        Console.Write("Digite o Valor a ser Sacado: ");
-                        while (true) {
-                            try {
-                                double valorSaque = double.Parse(Console.ReadLine());
-                                if(valorSaque > 0 && valorSaque <= conta.ConsultarSaldo()) {
-                                    conta.Sacar(valorSaque);
-                                    Console.WriteLine("Saque Realizado com Sucesso!");
-                                    break;
-                                }
-                                else {
-                                    Console.WriteLine("Valor inválido para saque. Digite um valor positivo menor ou igual ao saldo:");
-                                }
+                        Console.Write("Digite o valor a ser sacado: ");
+                        try {
+                            double valorSaque = double.Parse(Console.ReadLine());
+                            if (valorSaque <= 0) {
+                                throw new ValorInvalidoException();
                             }
-                            catch(FormatException) {
-                                Console.WriteLine("Formato de valor inválido. Digite um número:");
+                            else if (valorSaque > conta.ConsultarSaldo()) {
+                                throw new SaldoInsuficienteException();
                             }
+                            else {
+                                conta.Sacar(valorSaque);
+                                Console.WriteLine("Saque realizado com sucesso!");
+                            }
+                        }
+                        catch (FormatException) {
+                            Console.WriteLine("Por Favor, digite um número. ");
+                        }
+                        catch (SaldoInsuficienteException ex) {
+                            Console.WriteLine(ex.Message); // Exibe a mensagem da exceção personalizada
+                        }
+                        catch (ValorInvalidoException ex) {
+                            Console.WriteLine(ex.Message); // Exibe a mensagem da exceção personalizada
+                        }
+                        catch (Exception ex) // Captura exceções genéricas não tratadas anteriormente
+                        {
+                            Console.WriteLine("Erro inesperado: " + ex.Message);
                         }
                         break;
                     case 3:
